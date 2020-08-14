@@ -22,13 +22,14 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
 
-    socket.on('disconnect', () => {
-        console.log('Client disconnected from server');
-    });
-
-    socket.on('createMessage', (newMessage) => {
+    socket.on('createMessage', (newMessage, callback) => {
         console.log('received new message:', newMessage);
         io.emit('newMessage', generateMessage(message.from, message.text));
+        callback('this is from the server');
+});
+
+socket.on('disconnect', () => {
+    console.log('Client disconnected from server');
 });
 });
 
@@ -36,3 +37,4 @@ server.listen(port, () => {
     console.log(`Server is up on port ${port}`);
 
 });
+
